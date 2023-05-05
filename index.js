@@ -4,7 +4,7 @@ import cors from "cors";
 import Joi from "joi";
 //import mongoose from "mongoose";
 import usersRouter from "./router/users.router.js";
-import machinesRouter from "./router/machines.router.js";
+import machineRouter from "./router/machine.router.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/users", usersRouter);
-app.use("/machines", machinesRouter);
+app.use("/machine", machineRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

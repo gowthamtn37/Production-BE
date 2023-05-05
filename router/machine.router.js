@@ -10,7 +10,7 @@ const dataSchema = Joi.object({
   time: Joi.required(),
 });
 
-router.post("/machine", async (request, respond) => {
+router.post("/", async (request, respond) => {
   const { error, value } = dataSchema.validate(request.query);
   console.log(value);
   if (error) {
@@ -27,7 +27,7 @@ router.post("/machine", async (request, respond) => {
   }
 });
 
-router.get("/machine", async (request, respond) => {
+router.get("/", async (request, respond) => {
   const result = await Client.db("cnc_company")
     .collection("products")
     .find({})
