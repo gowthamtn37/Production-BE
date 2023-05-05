@@ -1,6 +1,7 @@
 import express from "express";
 import Joi from "joi";
 import { Client } from "../index.js";
+import { auth } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -27,7 +28,7 @@ router.post("/", async (request, respond) => {
   }
 });
 
-router.get("/", async (request, respond) => {
+router.get("/", auth, async (request, respond) => {
   const result = await Client.db("cnc_company")
     .collection("products")
     .find({})
