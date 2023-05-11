@@ -20,15 +20,6 @@ console.log("Connected to MongoDB");
 app.use(express.json());
 app.use(cors());
 
-app.use("/users", usersRouter);
-app.use("/machine", machineRouter);
-
-const io = new Server(httpServer, {
-  cors: {
-    origin: "http://localhost:5173",
-  },
-});
-
 const result = await Client.db("cnc_company")
   .collection("products")
   .find()
@@ -36,9 +27,17 @@ const result = await Client.db("cnc_company")
   .limit(1)
   .toArray();
 
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
 io.on("connection", (socket) => {
   socket.emit("send_msg", result);
 });
+
+app.use("/users", usersRouter);
+app.use("/machine", machineRouter);
 
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
