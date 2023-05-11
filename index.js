@@ -27,11 +27,7 @@ const result = await Client.db("cnc_company")
   .limit(1)
   .toArray();
 
-const io = new Server(httpServer, {
-  cors: {
-    origin: "http://localhost:5173",
-  },
-});
+const io = new Server(httpServer);
 io.on("connection", (socket) => {
   socket.emit("send_msg", result);
 });
