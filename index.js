@@ -1,12 +1,15 @@
 import express from "express";
-import { MongoClient, Timestamp } from "mongodb";
+import { MongoClient } from "mongodb";
 import cors from "cors";
+import { createServer } from "http";
 import { Server } from "socket.io";
 
 import usersRouter from "./router/users.router.js";
 import machineRouter from "./router/machine.router.js";
 
-const app = express();
+export const app = express();
+export const httpServer = createServer(app);
+
 const PORT = process.env.PORT;
 
 const mongo_URL = process.env.mongo_URL;
@@ -20,6 +23,6 @@ app.use(cors());
 app.use("/users", usersRouter);
 app.use("/machine", machineRouter);
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

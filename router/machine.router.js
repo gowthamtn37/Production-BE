@@ -2,7 +2,11 @@ import express from "express";
 import Joi from "joi";
 import { Client } from "../index.js";
 import { auth } from "../middleware/auth.js";
+
+import { createServer } from "http";
 import { Server } from "socket.io";
+import { app } from "../index.js";
+import { httpServer } from "../index.js";
 
 const router = express.Router();
 
@@ -20,15 +24,26 @@ router.post("/", async (request, respond) => {
     const { error, value } = dataSchema.validate({ prod, date, time });
 
     const isoDate = value.date + "T" + value.time;
-    console.log(parseInt(isoDate));
-
-    console.log(value);
     if (error) {
       console.log(error.message);
     } else {
+      const data = {
+        quantity: value.prod,
+        time: isoDate,
+      };
+
+      const io = new Server(httpServer, {
+        cors: {
+          origin: "https://exquisite-froyo-600594.netlify.app/",
+        },
+      });
+      io.on("connection", (socket) => {
+        socket.emit("send_msg", data);
+      });
+
       const result = await Client.db("cnc_company")
         .collection("products")
-        .insertOne({ quantity: value.prod, time: isoDate });
+        .insertOne(data);
       respond.status(200).send({ message: "data inserted successfully" });
     }
   }
