@@ -2,6 +2,7 @@ import express from "express";
 import Joi from "joi";
 import { Client } from "../index.js";
 import { auth } from "../middleware/auth.js";
+import { Server } from "socket.io";
 
 const router = express.Router();
 
