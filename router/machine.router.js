@@ -3,9 +3,7 @@ import Joi from "joi";
 import { Client } from "../index.js";
 import { auth } from "../middleware/auth.js";
 
-import { createServer } from "http";
 import { Server } from "socket.io";
-import { app } from "../index.js";
 import { httpServer } from "../index.js";
 
 const router = express.Router();
@@ -34,7 +32,7 @@ router.post("/", async (request, respond) => {
 
       const io = new Server(httpServer, {
         cors: {
-          origin: "https://exquisite-froyo-600594.netlify.app/",
+          origin: "https://exquisite-froyo-600594.netlify.app",
         },
       });
       io.on("connection", (socket) => {
