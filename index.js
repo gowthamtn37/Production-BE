@@ -28,8 +28,16 @@ const io = new Server(httpServer, {
     origin: "*",
   },
 });
+
+const result = await Client.db("cnc_company")
+  .collection("products")
+  .find()
+  .sort({ _id: -1 })
+  .limit(1)
+  .toArray();
+
 io.on("connection", (socket) => {
-  socket.emit("send_msg", "hello");
+  socket.emit("send_msg", result);
 });
 
 httpServer.listen(PORT, () => {
