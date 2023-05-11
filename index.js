@@ -23,6 +23,15 @@ app.use(cors());
 app.use("/users", usersRouter);
 app.use("/machine", machineRouter);
 
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
+io.on("connection", (socket) => {
+  socket.emit("send_msg", "hello");
+});
+
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

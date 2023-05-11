@@ -30,15 +30,6 @@ router.post("/", async (request, respond) => {
         time: isoDate,
       };
 
-      const io = new Server(httpServer, {
-        cors: {
-          origin: "https://exquisite-froyo-600594.netlify.app",
-        },
-      });
-      io.on("connection", (socket) => {
-        socket.emit("send_msg", data);
-      });
-
       const result = await Client.db("cnc_company")
         .collection("products")
         .insertOne(data);
