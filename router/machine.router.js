@@ -12,19 +12,24 @@ const dataSchema = Joi.object({
 });
 
 router.post("/", async (request, respond) => {
-  const { error, value } = dataSchema.validate(request.query);
-  console.log(value);
-  if (error) {
-    console.log(error.message);
+  const { prod, date, time } = request.query;
+  if (!prod || !date || !time) {
+    return respond.status(400).send({ message: "missing data" });
   } else {
-    // const date = request.query.date;
-    // const time = request.query.time;
-    //console.log(prod, date, time);
+    const { error, value } = dataSchema.validate({ prod, date, time });
+
+    const isoDate = value.date + "T" + value.time;
+    console.log(parseInt(isoDate));
+
     console.log(value);
-    const result = await Client.db("cnc_company")
-      .collection("products")
-      .insertOne(value);
-    respond.status(200).send({ message: "data inserted successfully" });
+    if (error) {
+      console.log(error.message);
+    } else {
+      const result = await Client.db("cnc_company")
+        .collection("products")
+        .insertOne({ quantity: value.prod, time: isoDate });
+      respond.status(200).send({ message: "data inserted successfully" });
+    }
   }
 });
 

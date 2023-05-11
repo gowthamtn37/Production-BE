@@ -23,6 +23,3 @@ app.use("/machine", machineRouter);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-const d = new Date();
-console.log(d);
