@@ -29,7 +29,7 @@ const result = await Client.db("cnc_company")
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://exquisite-froyo-600594.netlify.app",
     methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
     credentials: true,
