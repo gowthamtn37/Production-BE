@@ -3,6 +3,7 @@ import { MongoClient } from "mongodb";
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import { getMessage } from "./service/users.service.js";
 
 import usersRouter from "./router/users.router.js";
 import machineRouter from "./router/machine.router.js";
@@ -20,28 +21,29 @@ console.log("Connected to MongoDB");
 app.use(express.json());
 app.use(cors());
 
-const result = await Client.db("cnc_company")
-  .collection("products")
-  .find()
-  .sort({ _id: -1 })
-  .limit(1)
-  .toArray();
+app.use("/users", usersRouter);
+app.use("/machine", machineRouter);
 
 const io = new Server(httpServer, {
   cors: {
     origin: "https://exquisite-froyo-600594.netlify.app",
-    methods: ["GET", "POST"],
+    methods: ["GET"],
     transports: ["websocket", "polling"],
     credentials: true,
   },
   allowEIO3: true,
 });
-io.on("connection", (socket) => {
-  socket.emit("send_msg", result);
-});
+io.on("connection", async (socket) => {
+  //console.log("user connected");
 
-app.use("/users", usersRouter);
-app.use("/machine", machineRouter);
+  socket.on("disconnect", () => {
+    // console.log("user disconnected");
+  });
+
+  setInterval(async () => {
+    socket.emit("send_msg", await getMessage());
+  }, 1000);
+});
 
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

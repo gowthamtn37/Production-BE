@@ -42,3 +42,12 @@ export function passwordReset(OTP, hashpass) {
     .collection("user")
     .updateOne({ OTP: OTP }, { $set: { password: hashpass } });
 }
+
+export async function getMessage() {
+  return await Client.db("cnc_company")
+    .collection("products")
+    .find()
+    .sort({ _id: -1 })
+    .limit(1)
+    .toArray();
+}
