@@ -26,7 +26,7 @@ app.use("/machine", machineRouter);
 const io = new Server(httpServer, {
   cors: {
     origin: "https://exquisite-froyo-600594.netlify.app",
-    methods: ["GET"],
+    methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
     credentials: true,
   },
