@@ -20,7 +20,7 @@ export async function getUserName(username) {
 export async function generatehashpassword(password) {
   const noOfRounds = 10;
   const salt = await bycrpt.genSalt(noOfRounds);
-  const hashpassword = await bycrpt.hash(password, salt);
+  const hashpassword = bycrpt.hash(password, salt);
   return hashpassword;
 }
 
